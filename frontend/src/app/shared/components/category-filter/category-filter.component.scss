@@ -1,0 +1,80 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.catalog__filter {
+  width: 211px;
+  position: relative;
+
+  &_head {
+    @include flexAlignCenter;
+    justify-content: flex-end;
+    gap: 8px;
+    cursor: pointer;
+    padding: 12px 0 12px 23px;
+    color: $dark-blue;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 130%; /* 20.8px */
+    span {
+      width: 120px;
+    }
+  }
+
+  &_body {
+    padding: 17px 23px;
+    border-radius: 0 0 5px 5px;
+    border: 2px solid $default-light;
+    background: $white;
+
+    gap: 24px;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    display: none;
+
+    .catalog__filter_item {
+      @include flexCenterBetween;
+      color: #BEBEBE;
+      font-size: 16px;
+      font-style: normal;
+      line-height: 130%; /* 20.8px */
+      cursor: pointer;
+
+      span:nth-child(3) {
+        display: none;
+      }
+
+      &.active {
+        color: $dark-blue;
+
+        span {
+          &:nth-child(2) {
+            display: none;
+          }
+
+          &:nth-child(3) {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  &.open {
+    .catalog__filter_head {
+      background-color: #B9D5FD;
+      border-radius: 5px 5px 0 0;
+      padding-right: 23px;
+      justify-content: space-between;
+
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    .catalog__filter_body {
+      display: grid;
+    }
+  }
+
+}

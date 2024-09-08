@@ -1,0 +1,25 @@
+@mixin flexCenterCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flexAlignCenter {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flexCenterBetween {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin head-lora-38 {
+  color: $default;
+  font-family: 'Lora', sans-serif;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%; /* 49.4px */
+}

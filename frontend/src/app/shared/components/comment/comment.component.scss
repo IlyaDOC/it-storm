@@ -1,0 +1,100 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.comments__item {
+  .comment__head {
+    @include flexAlignCenter;
+    gap: 26px;
+    margin-bottom: 15px;
+
+    .user__image {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: $default-light;
+      border: 2px solid $default;
+      @include flexCenterCenter;
+    }
+
+    .user__info {
+      display: grid;
+      gap: 10px;
+
+      .user__name {
+        color: $default;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 130%; /* 23.4px */
+      }
+
+      .user__comment-date {
+        color: $placeholder;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 130%; /* 18.2px */
+      }
+    }
+  }
+
+  .comment__text {
+    color: $dark-blue;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%; /* 19.6px */
+    margin-bottom: 39px;
+  }
+
+  .comment__actions {
+    @include flexAlignCenter;
+    gap: 15px;
+
+    .comment__action {
+      @include flexAlignCenter;
+      gap: 3px;
+
+      count {
+        color: $dark-blue;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%; /* 19.6px */
+      }
+
+      a {
+        @include flexCenterCenter;
+        cursor: not-allowed;
+
+        &.active {
+          cursor: pointer;
+
+          svg path {
+            transition: .3s ease;
+          }
+
+          &:hover svg path {
+            stroke: $default;
+          }
+        }
+      }
+    }
+
+    .comment__report {
+      @include flexCenterCenter;
+      cursor: not-allowed;
+      &.active {
+        cursor: pointer;
+
+        svg path {
+          transition: .3s ease;
+        }
+
+        &:hover svg path {
+          stroke: red;
+        }
+      }
+    }
+  }
+}

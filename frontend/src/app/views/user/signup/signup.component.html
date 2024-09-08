@@ -1,0 +1,39 @@
+<section class="signup" [formGroup]="signupForm">
+  <div class="container">
+    <div class="signup__inner">
+      <div class="auth-form">
+        <div class="auth-title">Регистрация на сайте</div>
+        <div class="auth-inputs">
+          <div class="auth-input">
+            <input type="text" class="input"
+                   [ngStyle]="{'border-color': name?.invalid && (name?.dirty && name?.touched) ? 'red' : ''}"
+                   placeholder="Ваше имя" formControlName="name">
+          </div>
+          <div class="auth-input">
+            <input type="text" class="input"
+                   [ngStyle]="{'border-color': email?.invalid && (email?.touched && email?.dirty) ? 'red' : ''}"
+                   placeholder="Электронная почта" formControlName="email">
+          </div>
+          <div class="auth-input">
+            <input type="password" class="input"
+                   [ngStyle]="{'border-color': password?.invalid && (password?.dirty && password?.touched) ? 'red' : ''}"
+                   placeholder="Пароль" formControlName="password">
+          </div>
+          <div class="auth-checkbox">
+            <input type="checkbox" id="agree" formControlName="agree">
+            <label for="agree">Я принимаю <a href="#">условия пользовательского соглашения</a> и даю <a href="#">согласие на обработку персональных данных</a>.</label>
+          </div>
+        </div>
+        <div class="auth-button">
+          <button class="btn" [disabled]="signupForm.invalid" (click)="signup()">Зарегистрироваться</button>
+        </div>
+        <div class="auth-link">
+          Уже есть аккаунт? <a routerLink="/login">Войдите</a>
+        </div>
+      </div>
+      <div class="page-image">
+        <img src="assets/images/page/signup.png" alt="Hand with pen">
+      </div>
+    </div>
+  </div>
+</section>

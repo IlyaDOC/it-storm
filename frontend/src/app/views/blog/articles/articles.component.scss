@@ -1,0 +1,84 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.catalog {
+  padding: 80px 0 120px;
+
+  &__title {
+    margin-bottom: 40px;
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &__applied-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .catalog__applied-filter {
+      @include flexAlignCenter;
+      gap: 9px;
+      border-radius: 5px;
+      border: 1px solid $default;
+      background: $white;
+      padding: 8px 20px;
+      color: #709FDC;
+      font-size: 16px;
+      font-style: normal;
+      line-height: 130%; /* 20.8px */
+
+      a {
+        @include flexCenterCenter;
+        cursor: pointer;
+      }
+    }
+  }
+
+
+
+  &__articles {
+    margin-top: 40px;
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 24px;
+    row-gap: 40px;
+  }
+}
+
+.pagination {
+  margin-top: 70px;
+  @include flexCenterCenter;
+
+  .pagination__arrow {
+    cursor: pointer;
+    @include flexCenterCenter;
+
+    &.disabled {
+      filter: grayscale(1);
+    }
+  }
+
+  .pagination__pages {
+    margin: 0 50px;
+    @include flexCenterCenter;
+    gap: 40px;
+
+    a.pagination__page {
+      color: $dark-blue;
+      font-size: 20px;
+      font-style: normal;
+      line-height: 130%; /* 26px */
+      cursor: pointer;
+
+      &.active {
+        color: $default-light;
+
+      }
+    }
+  }
+}

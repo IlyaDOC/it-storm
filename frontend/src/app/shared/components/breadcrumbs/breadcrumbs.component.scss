@@ -1,0 +1,27 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.breadcrumbs__items {
+  @include flexAlignCenter;
+  gap: 22px;
+
+  .breadcrumbs__item {
+    color: $default;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%; /* 20.8px */
+
+    &:first-child {
+      color: $default-light;
+      font-style: normal;
+      line-height: 130%; /* 20.8px */
+      position: relative;
+      &:after {
+        position: absolute;
+        content: "/";
+        right: -14px;
+      }
+    }
+  }
+}

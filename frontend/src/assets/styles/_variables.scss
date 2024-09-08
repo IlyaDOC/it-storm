@@ -1,0 +1,16 @@
+:root {
+  --color-default: #709FDC;
+  --color-dark-blue: #071739;
+  --color-default-light: #B9D5FD;
+  --color-white: #FFFFFF;
+  --color-violet: #1E1A2B;
+  --color-placeholder: #A8ABA7;
+}
+
+$default: var(--color-default);
+$dark-blue: var(--color-dark-blue);
+$default-light: var(--color-default-light);
+$white: var(--color-white);
+$violet: var(--color-violet);
+$placeholder: var(--color-placeholder);
+

@@ -1,0 +1,101 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+
+.footer {
+  background: $default-light;
+  padding: 40px 0 54px;
+  &__inner {
+    display: grid;
+    grid-auto-flow: row;
+
+
+    &-top {
+      @include flexAlignCenter;
+      gap: 40px;
+      margin-bottom: 40px;
+      .footer__nav {
+        ul {
+          gap: 20px;
+
+          .nav__item {
+            a {
+
+            }
+          }
+        }
+      }
+    }
+
+    &-bottom {
+      display: flex;
+      align-items: baseline;
+      gap: 60px;
+      margin-bottom: 6px;
+
+      .footer-bottom-title {
+        color: $default;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .footer__address {
+        max-width: 253px;
+        display: grid;
+        gap: 10px;
+        .address-text {
+          color: $dark-blue;
+          font-size: 16px;
+        }
+      }
+
+      .footer__phone {
+        color: $dark-blue;
+        font-size: 16px;
+        display: grid;
+        gap: 10px;
+
+        .phone-text {
+          a {
+            color: $dark-blue;
+            font-size: 16px;
+          }
+        }
+
+        .phone-button {
+          .footer__btn {
+            padding: 10px 20px;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .footer__mail {
+        display: grid;
+        gap: 10px;
+
+        .mail-text {
+          a {
+            color: $dark-blue;
+            font-size: 14px;
+          }
+        }
+      }
+
+      .footer__socials {
+        display: grid;
+        gap: 15px;
+
+        .social__items {
+          @include flexAlignCenter;
+          gap: 12px;
+        }
+      }
+    }
+
+    .footer__rights {
+      color: $default;
+      font-size: 16px;
+    }
+  }
+}

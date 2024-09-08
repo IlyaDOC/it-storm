@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card__image">
+    <img src="assets/images/article/{{article.image}}" alt="">
+    <div class="card__category">{{article.category}}</div>
+  </div>
+  <div class="card__title">{{article.title}}</div>
+  <div class="card__description">
+    {{article.description}}
+  </div>
+  <div class="card__more">
+    <a [routerLink]="'/articles/' + article.url">Читать дальше</a>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="service-item">
+  <div class="service-image">
+    <img src="assets/images/page/main/service-{{index + 1}}.png" alt="">
+  </div>
+  <div class="service-title">
+    {{service.title}}
+  </div>
+  <div class="service-description">{{service.description}}</div>
+  <div class="service-bottom">
+    <div class="service-price">От {{service.price | spaceSeparatedNumber}}₽</div>
+    <button class="btn">Подробнее</button>
+  </div>
+</div>

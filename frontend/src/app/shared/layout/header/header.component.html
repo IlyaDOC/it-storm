@@ -1,0 +1,54 @@
+<header class="header">
+  <div class="container">
+    <div class="header__inner">
+      <div class="logo header__logo">
+        <a href="#">
+          <img src="assets/images/logo.svg" alt="Logo">
+        </a>
+      </div>
+      <nav class="nav header__nav">
+        <ul>
+          <li class="nav__item">
+            <a href="javascript:void(0)" routerLink="/" fragment="services">Услуги</a>
+          </li>
+          <li class="nav__item">
+            <a href="javascript:void(0)" routerLink="/" fragment="about">О нас</a>
+          </li>
+          <li class="nav__item">
+            <a routerLink="/articles" routerLinkActive="active">Статьи</a>
+          </li>
+          <li class="nav__item">
+            <a href="javascript:void(0)" routerLink="/" fragment="reviews">Отзывы</a>
+          </li>
+          <li class="nav__item">
+            <a href="javascript:void(0)" routerLink="/" fragment="contacts">Контакты</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header__contacts">
+        <a href="tel:74993431334"> +7 (499) 343-13-34</a>
+      </div>
+      <a *ngIf="!isLogged" routerLink="/login" class="header__user">
+        <div class="header__user-image">
+          <img src="assets/images/user.svg" alt="User image">
+        </div>
+        <div class="header__user-text">
+          Войти
+        </div>
+      </a>
+      <a *ngIf="isLogged" class="header__user" [matMenuTriggerFor]="menu">
+        <div class="header__user-image">
+          <img src="assets/images/user.svg" alt="User image">
+        </div>
+        <div class="header__user-text">
+          Привет, {{userName}}!
+        </div>
+      </a>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <span (click)="logout()">Выйти</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,48 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.header {
+  padding: 40px 0;
+  &__inner {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__nav {
+    ul {
+      gap: 30px;
+
+      a {
+        font-weight: 500;
+        color: $dark-blue;
+
+        &.active {
+          color: $default;
+        }
+      }
+    }
+  }
+
+  &__contacts {
+    color: $default;
+    font-size: 16px;
+    font-weight: 500;
+
+    a {
+      color: $default;
+      font-size: 16px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+  }
+
+  &__user {
+    @include flexCenterCenter;
+    gap: 7px;
+    cursor: pointer;
+    color: $dark-blue;
+    font-size: 16px;
+  }
+}
