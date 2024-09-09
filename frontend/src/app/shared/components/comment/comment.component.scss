@@ -78,6 +78,12 @@
             stroke: $default;
           }
         }
+
+        &.chosen {
+          svg path {
+            stroke: $default;
+          }
+        }
       }
     }
 

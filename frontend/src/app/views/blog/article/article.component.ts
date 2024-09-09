@@ -12,6 +12,8 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpErrorResponse} from "@angular/common/http";
+import {UserActionsResponseType} from "../../../../types/user-actions.response.type";
+import {LoginResponseType} from "../../../../types/login-response.type";
 
 @Component({
   selector: 'app-article',
@@ -29,6 +31,7 @@ export class ArticleComponent implements OnInit {
   public hasMoreComments: boolean = false;
   private offset: number = 3;
   private readonly limit: number = 10;
+  public commentsActions: UserActionsResponseType[] = [];
 
   public commentForm = this.fb.group({
     text: ['', Validators.required]
@@ -58,7 +61,43 @@ export class ArticleComponent implements OnInit {
           this.text = this.article.text;
           this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.text);
           this.comments = this.article.comments;
+          console.log(this.article.comments);
           this.hasMoreComments = this.comments.length < this.article.commentsCount;
+
+          this.commentService.getActionsForUser(this.article.id)
+            .subscribe({
+              next: (data: UserActionsResponseType[] | DefaultResponseType) => {
+                let error = null;
+                if ((data as DefaultResponseType).error !== undefined) {
+                  error = (data as DefaultResponseType).message;
+                }
+
+                if (error) {
+                  this._snackBar.open(error);
+                  throw new Error(error);
+                }
+
+                this.commentsActions = data as UserActionsResponseType[];
+                console.log(this.commentsActions);
+
+                this.comments = this.comments.map((comment: CommentType) => {
+                  const action = this.commentsActions.find(action => action.comment === comment.id);
+                  return {
+                    ...comment,
+                    liked: action ? action.action === 'like' : false, // Добавляем состояние liked
+                    disliked: action ? action.action === 'dislike' : false // Добавляем состояние disliked
+                  };
+                });
+                console.log(this.article.comments);
+              },
+              error: (errorResponse: HttpErrorResponse) => {
+                if (errorResponse.error && errorResponse.error.message) {
+                  this._snackBar.open(errorResponse.error.message);
+                } else {
+                  this._snackBar.open('Ошибка получения аданных активности пользователя');
+                }
+              }
+            })
         });
     });
 
@@ -66,9 +105,10 @@ export class ArticleComponent implements OnInit {
       this.articleService.getRelatedArticlesCards(params['url'])
         .subscribe((data: ArticleCardType[]) => {
           this.relatedArticles = data;
-          console.log(this.relatedArticles);
         });
     });
+
+
   }
 
   getMoreComments(articleId: string, offset: number = 3): void {
