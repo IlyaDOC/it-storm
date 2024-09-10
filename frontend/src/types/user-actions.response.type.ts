@@ -1,4 +1,4 @@
 export type UserActionsResponseType = {
-  "comment": string,
-  "action": string,
+  comment: string,
+  action: string,
 }

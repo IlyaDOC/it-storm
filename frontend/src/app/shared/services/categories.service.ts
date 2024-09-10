@@ -10,7 +10,7 @@ import {environment} from "../../../environments/environment";
 export class CategoriesService {
 
   constructor(private http: HttpClient) { }
-
+  /** Запрос на получение всех категорий статей. В ответ получаем массив категорий */
   getCategories():Observable<CategoryType[]> {
     return this.http.get<CategoryType[]>(environment.api + 'categories');
   }

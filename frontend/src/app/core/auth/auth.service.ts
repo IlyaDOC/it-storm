@@ -21,6 +21,7 @@ export class AuthService {
     this.isLogged = !!localStorage.getItem(this.accessTokenKey);
   }
 
+  /** Запрос на авторизацию пользователя. В ответ получаем либо ответ с токенами, либо ответ с ошибкой DefaultResponse */
   login(email: string, password: string, rememberMe: boolean): Observable<DefaultResponseType | LoginResponseType> {
     return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'login', {
       email: email,
@@ -28,6 +29,8 @@ export class AuthService {
       rememberMe: rememberMe
     });
   };
+
+  /** Запрос на регистрацию пользователя. В ответ получаем либо ответ с токенами (авторизованный пользователь), либо ответ с ошибкой DefaultResponse */
   signup(name: string, email: string, password: string): Observable<DefaultResponseType | SignupResponseType> {
     return this.http.post<DefaultResponseType | LoginResponseType>(environment.api + 'signup', {
       name: name,
@@ -35,6 +38,8 @@ export class AuthService {
       password: password,
     });
   };
+
+  /** Запрос на разлогинивание пользователя. В ответ получаем либо успешный стандартный ответ DefaultResponse, либо ответ с ошибкой DefaultResponse */
   logout(): Observable<DefaultResponseType> {
     const tokens = this.getTokens();
     if (tokens && tokens.refreshToken) {
@@ -45,6 +50,7 @@ export class AuthService {
     throw throwError(()=> 'Can not find token');
   };
 
+  /** Запрос на обмен access токена по refresh токену. В ответ получаем либо ответ с токенами, либо ответ с ошибкой DefaultResponse */
   refresh():Observable<DefaultResponseType | LoginResponseType> {
     const tokens = this.getTokens();
     if (tokens && tokens.refreshToken) {
