@@ -91,11 +91,7 @@
       @include flexCenterCenter;
       cursor: not-allowed;
       &.active {
-        cursor: pointer;
-
-        svg path {
-          transition: .3s ease;
-        }
+        cursor: pointer;transition: .3s ease;
 
         &:hover svg path {
           stroke: red;

@@ -33,17 +33,6 @@ export class CommentComponent implements OnInit {
   // Функционал клика по кнопкам комментария
   commentAction(commentId: string, action: ActionType): void {
     if (this.isLogged && commentId && action) {
-
-      // this.comment.liked = !this.comment.liked;
-      // if (this.comment.liked) {
-      //   this.comment.disliked = false; // Снимаем dislike, если поставили like
-      // }
-      //
-      // this.comment.disliked = !this.comment.disliked;
-      // if (this.comment.disliked) {
-      //   this.comment.liked = false; // Снимаем like, если поставили dislike
-      // }
-
       // Отправляем запрос на добавление и удаление реакции к комментарию из БД
       this.commentService.applyAction(commentId, action)
         .subscribe({
@@ -53,10 +42,20 @@ export class CommentComponent implements OnInit {
               error = (data as DefaultResponseType).message;
             }
             if (error) {
+              console.log(error);
+
               this._snackBar.open(error);
               throw new Error(error);
             }
-            this._snackBar.open((data as DefaultResponseType).message);
+            const actionType = ActionType;
+
+            if (action === actionType.violate) {
+              this._snackBar.open('Жалоба отправлена');
+            } else {
+              this._snackBar.open('Ваш голос учтен!');
+            }
+
+
 
             // Запросить данные о действиях к комментарию у пользователя
             this.commentService.getActionsForComment(this.comment.id)
@@ -66,9 +65,11 @@ export class CommentComponent implements OnInit {
 
                   if ((data as DefaultResponseType).error) {
                     error = (data as DefaultResponseType).message;
+
                   }
 
                   if (error) {
+
                     this._snackBar.open(error);
                     throw new Error(error);
                   }
@@ -100,12 +101,12 @@ export class CommentComponent implements OnInit {
                   }
                 }
               })
-
-
-
           }),
           error: (errorResponse: HttpErrorResponse) => {
             if (errorResponse.error && errorResponse.error.message) {
+              if (errorResponse.error.message === 'Это действие уже применено к комментарию') {
+                errorResponse.error.message = 'Жалоба уже отправлена';
+              }
               this._snackBar.open(errorResponse.error.message);
             } else {
               this._snackBar.open('Ошибка отправки реакции');

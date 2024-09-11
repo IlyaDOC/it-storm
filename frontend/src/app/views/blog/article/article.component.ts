@@ -25,7 +25,7 @@ export class ArticleComponent implements OnInit {
   public safeHtml!: SafeHtml;
   public relatedArticles!: ArticleCardType[];
   public isLogged: boolean = false;
-  public comments!: CommentType[];
+  public comments: CommentType[] = [];
   public isLoading: boolean = false;
   public hasMoreComments: boolean = false;
   private offset: number = 3;
@@ -84,7 +84,7 @@ export class ArticleComponent implements OnInit {
                     return {
                       ...comment,
                       liked: action ? action.action === 'like' : false, // Добавляем состояние liked
-                      disliked: action ? action.action === 'dislike' : false // Добавляем состояние disliked
+                      disliked: action ? action.action === 'dislike' : false, // Добавляем состояние disliked
                     };
                   });
                 },
@@ -92,7 +92,7 @@ export class ArticleComponent implements OnInit {
                   if (errorResponse.error && errorResponse.error.message) {
                     this._snackBar.open(errorResponse.error.message);
                   } else {
-                    this._snackBar.open('Ошибка получения аданных активности пользователя');
+                    this._snackBar.open('Ошибка получения данных активности пользователя');
                   }
                 }
               })
@@ -110,7 +110,7 @@ export class ArticleComponent implements OnInit {
     });
   }
 
-  // Загрузка дополнительных комментариев по кнопке Загрузить ещё комментарии
+  // Загрузка дополнительных комментариев по кнопке "Загрузить" ещё комментарии
   getMoreComments(articleId: string, offset: number = 3): void {
     this.isLoading = true;
     this.offset += this.limit;
@@ -125,6 +125,7 @@ export class ArticleComponent implements OnInit {
             disliked: action ? action.action === 'dislike' : false // Добавляем состояние disliked
           };
         });
+
         this.hasMoreComments = this.comments.length < this.article.commentsCount;
       })
   };
@@ -159,12 +160,14 @@ export class ArticleComponent implements OnInit {
     }
   };
 
-  // Обновляем список последних трех комменотариев к статье, дополняя его новым
+  // Обновляем список последних трех комментариев к статье, дополняя его новым
   updateLastComments() {
     this.activatedRoute.params.subscribe(params => {
       this.articleService.getArticle(params['url'])
         .subscribe((data: ArticleType) => {
-          this.comments = data.comments;
+          this.comments = [...this.comments, ...data.comments];
+          console.log(this.comments);
+          console.log('Комментарии обновлены')
         });
     });
 
