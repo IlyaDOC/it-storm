@@ -7,6 +7,7 @@ import {DefaultResponseType} from "../../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserActionsResponseType} from "../../../../types/user-actions.response.type";
+import {CommentsType} from "../../../../types/comments.type";
 
 @Component({
   selector: 'app-comment',
@@ -72,16 +73,35 @@ export class CommentComponent implements OnInit {
                     throw new Error(error);
                   }
                   let commentActions = data as UserActionsResponseType[];
-                  console.log(commentActions);
+
                   this.comment = {
                     ...this.comment,
                     liked: commentActions.some(action => action.comment === this.comment.id && action.action === 'like'),
-                    disliked: commentActions.some(action => action.comment === this.comment.id && action.action === 'dislike')
+                    disliked: commentActions.some(action => action.comment === this.comment.id && action.action === 'dislike'),
+                  }
+
+                  // Запросить все комментарии, чтобы обновить количество лайков и дизлайков
+
+                  this.commentService.getComments(this.articleId, 0)
+                    .subscribe((data: CommentsType) => {
+                      data.comments.forEach(comment=> {
+                        if (comment.id === this.comment.id) {
+                          this.comment.likesCount = comment.likesCount;
+                          this.comment.dislikesCount = comment.dislikesCount;
+                        }
+                      })
+                    });
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  if (errorResponse.error && errorResponse.error.message) {
+                    this._snackBar.open(errorResponse.error.message);
+                  } else {
+                    this._snackBar.open('Ошибка отправки реакции');
                   }
                 }
               })
 
-            // Запросить все комментарии, чтобы получить количество лайков и дизлайков
+
 
           }),
           error: (errorResponse: HttpErrorResponse) => {
@@ -92,34 +112,7 @@ export class CommentComponent implements OnInit {
             }
           }
         })
-
-      // Повторно запросить реакции пользователя, чтобы изменить состояние кнопок
-
     }
   };
 
-  // commentResponse(commentId: string) {
-  //   this.commentService.getActionsForUser(commentId)
-  //     .subscribe({
-  //       next: (data: DefaultResponseType | UserActionsResponseType[]) => {
-  //         let error = null;
-  //         if ((data as DefaultResponseType).error) {
-  //           error = (data as DefaultResponseType).message;
-  //         }
-  //         if (error) {
-  //           this._snackBar.open(error);
-  //           throw new Error(error);
-  //         }
-  //         this._snackBar.open((data as DefaultResponseType).message);
-  //
-  //       },
-  //       error: (error: HttpErrorResponse) => {
-  //         if (error.error && error.error.message) {
-  //           this._snackBar.open(error.error.message);
-  //         } else {
-  //           this._snackBar.open('Ошибка отправки реакции');
-  //         }
-  //       }
-  //     })
-  // }
 }
