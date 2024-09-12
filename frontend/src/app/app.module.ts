@@ -14,6 +14,7 @@ import {AuthInterceptor} from "./core/auth/auth.interceptor";
 import {CarouselModule} from "ngx-owl-carousel-o";
 import {SharedModule} from "./shared/shared.module";
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +22,7 @@ import {SharedModule} from "./shared/shared.module";
     HeaderComponent,
     FooterComponent,
     MainComponent,
+
   ],
   imports: [
     BrowserModule,

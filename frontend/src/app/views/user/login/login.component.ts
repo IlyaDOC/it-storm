@@ -6,6 +6,8 @@ import {DefaultResponseType} from "../../../../types/default-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
+import {UserInfoType} from "../../../../types/user-info.type";
+import {UserService} from "../../../shared/services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -24,7 +26,8 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private _snackBar: MatSnackBar,
-              private router: Router
+              private router: Router,
+              private userService: UserService
   ) {
   }
 
@@ -62,6 +65,20 @@ export class LoginComponent implements OnInit {
 
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
             this.authService.userId = loginResponse.userId;
+
+            this.userService.getUserInfo()
+              .subscribe({
+                next: (data: UserInfoType | DefaultResponseType) => {
+                  this.authService.userName$.next((data as UserInfoType).name);
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  if (errorResponse.error && errorResponse.error.message) {
+                    this._snackBar.open(errorResponse.error.message);
+                  } else {
+                    this._snackBar.open('Ошибка получения имени');
+                  }
+                }
+              })
 
             this._snackBar.open('Вы успешно авторизовались');
             this.router.navigate(['/']);

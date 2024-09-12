@@ -15,7 +15,9 @@ export class AuthService {
   public userIdKey: string = 'userId';
 
   public isLogged$: Subject<boolean> = new Subject<boolean>();
+  public userName$: Subject<string> = new Subject<string>();
   private isLogged: boolean = false;
+
 
   constructor(private http: HttpClient) {
     this.isLogged = !!localStorage.getItem(this.accessTokenKey);

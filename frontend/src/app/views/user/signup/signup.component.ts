@@ -68,6 +68,20 @@ export class SignupComponent implements OnInit {
 
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
             this.authService.userId = loginResponse.userId;
+
+            this.userService.getUserInfo()
+              .subscribe({
+                next: (data: UserInfoType | DefaultResponseType) => {
+                  this.authService.userName$.next((data as UserInfoType).name);
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  if (errorResponse.error && errorResponse.error.message) {
+                    this._snackBar.open(errorResponse.error.message);
+                  } else {
+                    this._snackBar.open('Ошибка получения имени');
+                  }
+                }
+              })
             this._snackBar.open('Вы успешно зарегистрировались');
             this.router.navigate(['/']);
 

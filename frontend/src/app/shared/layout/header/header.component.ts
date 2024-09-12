@@ -6,7 +6,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {UserService} from "../../services/user.service";
 import {UserInfoType} from "../../../../types/user-info.type";
-import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-header',
@@ -27,6 +26,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isLogged$.subscribe((isLoggedIn: boolean) => {
       this.isLogged = isLoggedIn;
+    });
+
+    this.authService.userName$.subscribe((userName: string) => {
+      this.userName = userName;
     });
 
     if (this.isLogged) {
