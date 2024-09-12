@@ -21,7 +21,9 @@ export class SignupComponent implements OnInit {
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]],
     agree: [false, [Validators.requiredTrue]]
-  })
+  });
+  public show: boolean = true;
+  public inputType: string = 'password';
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -97,4 +99,9 @@ export class SignupComponent implements OnInit {
 
     }
   }
+
+  showPassword() {
+    this.show = !this.show
+    this.inputType = this.show ? 'password' : 'email';
+  };
 }

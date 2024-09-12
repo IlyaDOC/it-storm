@@ -97,7 +97,6 @@ export class ArticleComponent implements OnInit {
                 }
               })
           }
-
         });
     });
 
@@ -165,9 +164,7 @@ export class ArticleComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.articleService.getArticle(params['url'])
         .subscribe((data: ArticleType) => {
-          this.comments = [...this.comments, ...data.comments];
-          console.log(this.comments);
-          console.log('Комментарии обновлены')
+          this.comments = data.comments;
         });
     });
 

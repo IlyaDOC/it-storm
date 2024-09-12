@@ -21,7 +21,10 @@ export class LoginComponent implements OnInit {
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required]],
     rememberMe: [false],
-  })
+  });
+
+  public show: boolean = true;
+  public inputType: string = 'password';
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -93,6 +96,11 @@ export class LoginComponent implements OnInit {
           }
         })
     }
+  }
+
+  showPassword() {
+    this.show = !this.show
+    this.inputType = this.show ? 'password' : 'email';
   }
 
 }
