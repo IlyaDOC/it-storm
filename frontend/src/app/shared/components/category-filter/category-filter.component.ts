@@ -11,20 +11,23 @@ import {ActiveParamsUtil} from "../../utils/active-params.util";
   styleUrls: ['./category-filter.component.scss']
 })
 export class CategoryFilterComponent implements OnInit {
-  public categories: CategoryType[] = [];
-  public open = false;
-  public activeIndexes: number[] = [];
+  public categories: CategoryType[] = []; // Переменная для хранения категорий
+  public open = false; // Переменная отвечает за открытие и закрытие фильтра
+  public activeIndexes: number[] = []; // Хранит в себе индекс категории, на которую кликаем
   public activeParams: ActiveParamsType = {categories: []};
 
   constructor(private categoriesService: CategoriesService, private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    // Запрос категорий
     this.categoriesService.getCategories()
       .subscribe((data: CategoryType[]) => {
         this.categories = data;
       })
 
+    // Если в роутинге есть query параметры фильтра, но при обновлении страницы
+    // они будут отмечены как активные и фильтр будет оставаться открытым
     this.activatedRoute.queryParams
       .subscribe(params => {
         this.activeParams = ActiveParamsUtil.processParams(params);
@@ -36,10 +39,12 @@ export class CategoryFilterComponent implements OnInit {
       });
   }
 
+  // Управление состоянием фильтра
   toggle() {
     this.open = !this.open;
   }
 
+  // Основной функционал фильтра категорий статей
   updateFilterParams(url: string, checked: boolean) {
     if (this.activeParams.categories && this.activeParams.categories.length > 0) {
       const existingCategory = this.activeParams.categories.find(item => item === url);
@@ -57,6 +62,7 @@ export class CategoryFilterComponent implements OnInit {
     });
   }
 
+  // Управление переключением категорий
   toggleItem(index: number, url: string) {
     const indexPosition = this.activeIndexes.indexOf(index);
     if (indexPosition > -1) {

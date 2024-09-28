@@ -12,7 +12,8 @@ export class UserService {
   constructor(private http: HttpClient) {
 
   }
-
+  /** Получение информации о пользователе. Необходимо передавать авторизационный заголовок с access токеном.
+   * В ответ получаем DefaultResponse в случае неудачи, либо же данные пользователя */
   getUserInfo(): Observable<UserInfoType | DefaultResponseType> {
     return this.http.get<UserInfoType | DefaultResponseType>(environment.api + 'users');
   }

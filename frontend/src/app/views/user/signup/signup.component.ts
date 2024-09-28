@@ -21,7 +21,9 @@ export class SignupComponent implements OnInit {
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]],
     agree: [false, [Validators.requiredTrue]]
-  })
+  });
+  public show: boolean = true;
+  public inputType: string = 'password';
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -68,6 +70,20 @@ export class SignupComponent implements OnInit {
 
             this.authService.setTokens(loginResponse.accessToken, loginResponse.refreshToken);
             this.authService.userId = loginResponse.userId;
+
+            this.userService.getUserInfo()
+              .subscribe({
+                next: (data: UserInfoType | DefaultResponseType) => {
+                  this.authService.userName$.next((data as UserInfoType).name);
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  if (errorResponse.error && errorResponse.error.message) {
+                    this._snackBar.open(errorResponse.error.message);
+                  } else {
+                    this._snackBar.open('Ошибка получения имени');
+                  }
+                }
+              })
             this._snackBar.open('Вы успешно зарегистрировались');
             this.router.navigate(['/']);
 
@@ -83,4 +99,9 @@ export class SignupComponent implements OnInit {
 
     }
   }
+
+  showPassword() {
+    this.show = !this.show
+    this.inputType = this.show ? 'password' : 'email';
+  };
 }

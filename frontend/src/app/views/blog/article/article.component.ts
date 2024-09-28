@@ -12,6 +12,7 @@ import {FormBuilder, Validators} from "@angular/forms";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpErrorResponse} from "@angular/common/http";
+import {UserActionsResponseType} from "../../../../types/user-actions.response.type";
 
 @Component({
   selector: 'app-article',
@@ -24,19 +25,18 @@ export class ArticleComponent implements OnInit {
   public safeHtml!: SafeHtml;
   public relatedArticles!: ArticleCardType[];
   public isLogged: boolean = false;
-  public comments!: CommentType[];
+  public comments: CommentType[] = [];
   public isLoading: boolean = false;
   public hasMoreComments: boolean = false;
   private offset: number = 3;
   private readonly limit: number = 10;
+  public commentsActions: UserActionsResponseType[] = [];
 
   public commentForm = this.fb.group({
     text: ['', Validators.required]
   });
 
-
   constructor(private activatedRoute: ActivatedRoute,
-              private router: Router,
               private articleService: ArticleService,
               private sanitizer: DomSanitizer,
               private authService: AuthService,
@@ -51,6 +51,7 @@ export class ArticleComponent implements OnInit {
       this.isLogged = isLoggedIn;
     });
 
+    // Получение всех данных по одной статье
     this.activatedRoute.params.subscribe(params => {
       this.articleService.getArticle(params['url'])
         .subscribe((data: ArticleType) => {
@@ -59,28 +60,76 @@ export class ArticleComponent implements OnInit {
           this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(this.text);
           this.comments = this.article.comments;
           this.hasMoreComments = this.comments.length < this.article.commentsCount;
+
+          // Получаем действия залогиненного пользователя
+          if (this.isLogged) {
+            this.commentService.getActionsForUser(this.article.id)
+              .subscribe({
+                next: (data: UserActionsResponseType[] | DefaultResponseType) => {
+                  let error = null;
+                  if ((data as DefaultResponseType).error !== undefined) {
+                    error = (data as DefaultResponseType).message;
+                  }
+
+                  if (error) {
+                    this._snackBar.open(error);
+                    throw new Error(error);
+                  }
+
+                  this.commentsActions = data as UserActionsResponseType[];
+
+                  // Добавляем в коллекцию с комментариями свойства liked и disliked на основании данных пользователя
+                  this.comments = this.comments.map((comment: CommentType) => {
+                    const action = this.commentsActions.find(action => action.comment === comment.id);
+                    return {
+                      ...comment,
+                      liked: action ? action.action === 'like' : false, // Добавляем состояние liked
+                      disliked: action ? action.action === 'dislike' : false, // Добавляем состояние disliked
+                    };
+                  });
+                },
+                error: (errorResponse: HttpErrorResponse) => {
+                  if (errorResponse.error && errorResponse.error.message) {
+                    this._snackBar.open(errorResponse.error.message);
+                  } else {
+                    this._snackBar.open('Ошибка получения данных активности пользователя');
+                  }
+                }
+              })
+          }
         });
     });
 
+    // Запрос на получение связанных статей
     this.activatedRoute.params.subscribe(params => {
       this.articleService.getRelatedArticlesCards(params['url'])
         .subscribe((data: ArticleCardType[]) => {
           this.relatedArticles = data;
-          console.log(this.relatedArticles);
         });
     });
   }
 
+  // Загрузка дополнительных комментариев по кнопке "Загрузить" ещё комментарии
   getMoreComments(articleId: string, offset: number = 3): void {
     this.isLoading = true;
     this.offset += this.limit;
     this.commentService.getComments(articleId, offset)
       .subscribe((data: CommentsType) => {
         this.comments = [...this.article.comments, ...data.comments];
+        this.comments = this.comments.map((comment: CommentType) => {
+          const action = this.commentsActions.find(action => action.comment === comment.id);
+          return {
+            ...comment,
+            liked: action ? action.action === 'like' : false, // Добавляем состояние liked
+            disliked: action ? action.action === 'dislike' : false // Добавляем состояние disliked
+          };
+        });
+
         this.hasMoreComments = this.comments.length < this.article.commentsCount;
       })
   };
 
+  // Функционал добавления нового комментария
   addComment(): void {
     if (this.commentForm.valid && this.commentForm.value.text) {
       this.commentService.addComment(this.commentForm.value.text, this.article.id)
@@ -95,7 +144,7 @@ export class ArticleComponent implements OnInit {
               throw new Error(error);
             }
             this._snackBar.open(data.message);
-            this.updateComments();
+            this.updateLastComments();
           },
 
           error: (error: HttpErrorResponse) => {
@@ -110,15 +159,15 @@ export class ArticleComponent implements OnInit {
     }
   };
 
-
-  updateComments() {
+  // Обновляем список последних трех комментариев к статье, дополняя его новым
+  updateLastComments() {
     this.activatedRoute.params.subscribe(params => {
-      console.log('Произошел запрос')
       this.articleService.getArticle(params['url'])
         .subscribe((data: ArticleType) => {
           this.comments = data.comments;
         });
     });
+
     this.hasMoreComments = this.comments.length < this.article.commentsCount;
   }
 }
