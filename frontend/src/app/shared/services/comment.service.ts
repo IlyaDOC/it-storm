@@ -1,18 +1,19 @@
 import {Injectable} from '@angular/core';
 import {CommentsType} from "../../../types/comments.type";
-import {Observable} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {DefaultResponseType} from "../../../types/default-response.type";
 import {ActionType} from "../../../types/action.type";
 import {UserActionsResponseType} from "../../../types/user-actions.response.type";
+import {CommentType} from "../../../types/comment.type";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
-
+  public comments$: Subject<CommentType[]> = new Subject<CommentType[]>;
   constructor(private http: HttpClient) {}
 
   /** Запрос на загрузку комментариев к статье. Передаем количество комментариев, которые надо пропустить, а также id статьи */

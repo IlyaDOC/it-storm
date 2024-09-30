@@ -20,8 +20,8 @@ import {UserActionsResponseType} from "../../../../types/user-actions.response.t
   styleUrls: ['./article.component.scss']
 })
 export class ArticleComponent implements OnInit {
-  public article!: ArticleType;
-  public text!: string;
+  public article: ArticleType;
+  public text: string = '';
   public safeHtml!: SafeHtml;
   public relatedArticles!: ArticleCardType[];
   public isLogged: boolean = false;
@@ -44,6 +44,32 @@ export class ArticleComponent implements OnInit {
               private fb: FormBuilder,
               private _snackBar: MatSnackBar) {
     this.isLogged = authService.getIsLoggedIn();
+    this.article = {
+      text: '',
+      comments: [
+        {
+          id: '',
+          text: '',
+          date: '',
+          likesCount: 0,
+          dislikesCount: 0,
+          user: {
+            id: '',
+            name: ''
+          },
+          liked: false,
+          disliked: false,
+        }
+      ],
+      commentsCount: 0,
+      id: '',
+      title: '',
+      description: '',
+      image: '',
+      date: '',
+      category: '',
+      url: ''
+    }
   }
 
   ngOnInit(): void {
@@ -143,8 +169,18 @@ export class ArticleComponent implements OnInit {
               this._snackBar.open(error);
               throw new Error(error);
             }
+
+            this.activatedRoute.params.subscribe(params => {
+              this.articleService.getArticle(params['url'])
+                .subscribe((data: ArticleType) => {
+                  this.comments = data.comments;
+                });
+            });
+
+            this.hasMoreComments = this.comments.length < this.article.commentsCount;
             this._snackBar.open(data.message);
-            this.updateLastComments();
+            // this.updateLastComments();
+            this.commentForm.reset();
           },
 
           error: (error: HttpErrorResponse) => {
@@ -155,19 +191,20 @@ export class ArticleComponent implements OnInit {
             }
           }
         })
-      this.commentForm.reset();
+
     }
   };
 
   // Обновляем список последних трех комментариев к статье, дополняя его новым
-  updateLastComments() {
-    this.activatedRoute.params.subscribe(params => {
-      this.articleService.getArticle(params['url'])
-        .subscribe((data: ArticleType) => {
-          this.comments = data.comments;
-        });
-    });
-
-    this.hasMoreComments = this.comments.length < this.article.commentsCount;
-  }
+  // updateLastComments() {
+  //   this.activatedRoute.params.subscribe(params => {
+  //     this.articleService.getArticle(params['url'])
+  //       .subscribe((data: ArticleType) => {
+  //         this.comments = data.comments;
+  //         console.log(this.comments);
+  //       });
+  //   });
+  //
+  //   this.hasMoreComments = this.comments.length < this.article.commentsCount;
+  // }
 }

@@ -10,5 +10,4 @@ export type CommentType = {
   },
   liked?: boolean,
   disliked?: boolean,
-
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {CategoryType} from "../../../../types/category.type";
 import {CategoriesService} from "../../services/categories.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -6,11 +6,11 @@ import {ActiveParamsType} from "../../../../types/active-params.type";
 import {ActiveParamsUtil} from "../../utils/active-params.util";
 
 @Component({
-  selector: 'app-category-filter',
-  templateUrl: './category-filter.component.html',
-  styleUrls: ['./category-filter.component.scss']
+  selector: 'app-catalog-filter',
+  templateUrl: './catalog-filter.component.html',
+  styleUrls: ['./catalog-filter.component.scss']
 })
-export class CategoryFilterComponent implements OnInit {
+export class CatalogFilterComponent implements OnInit {
   public categories: CategoryType[] = []; // Переменная для хранения категорий
   public open = false; // Переменная отвечает за открытие и закрытие фильтра
   public activeIndexes: number[] = []; // Хранит в себе индекс категории, на которую кликаем
@@ -42,6 +42,20 @@ export class CategoryFilterComponent implements OnInit {
   // Управление состоянием фильтра
   toggle() {
     this.open = !this.open;
+
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    event.stopPropagation();
+    const target = event.target as HTMLElement;
+    const filterElement = document.querySelector('.category-filter') as HTMLElement;
+
+    // Проверяем, был ли клик вне компонента
+    if (!event.composedPath().includes(filterElement) && event.composedPath().includes(target)) {
+
+     this.open = false;
+    }
   }
 
   // Основной функционал фильтра категорий статей

@@ -15,12 +15,25 @@ import {CommentsType} from "../../../../types/comments.type";
   styleUrls: ['./comment.component.scss']
 })
 export class CommentComponent implements OnInit {
-  @Input() comment!: CommentType;
+  @Input() comment: CommentType;
   @Input() articleId!: string;
   public isLogged: boolean = false;
   protected readonly ActionType = ActionType;
 
   constructor(private authService: AuthService, private commentService: CommentService, private _snackBar: MatSnackBar) {
+    this.comment = {
+      id: '',
+      text: '',
+      date: '',
+      likesCount: 0,
+      dislikesCount: 0,
+      user: {
+        id: '',
+        name: ''
+      },
+      liked: false,
+      disliked: false,
+    }
     this.isLogged = authService.getIsLoggedIn();
   }
 
@@ -69,7 +82,6 @@ export class CommentComponent implements OnInit {
                   }
 
                   if (error) {
-
                     this._snackBar.open(error);
                     throw new Error(error);
                   }

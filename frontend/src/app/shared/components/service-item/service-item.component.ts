@@ -7,9 +7,14 @@ import {ServiceItemType} from "../../../../types/service-item.type";
   styleUrls: ['./service-item.component.scss']
 })
 export class ServiceItemComponent implements OnInit {
-  @Input() service!: ServiceItemType;
-  @Input() index!: number;
+  @Input() service: ServiceItemType;
+  @Input() index: number = 0;
   constructor() {
+    this.service = {
+      title: '',
+      description: '',
+      price: 0
+    }
   }
 
   ngOnInit(): void {
