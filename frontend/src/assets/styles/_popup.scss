@@ -1,3 +1,5 @@
+@import "variables";
+
 .popup__wrapper {
   position: fixed;
   top: 0;
@@ -31,27 +33,44 @@
     }
 
     .popup__title {
-      max-width: 406px;
+      max-width: 443px;
       margin: 0 auto 20px;
       text-align: center;
     }
+
     .popup__form {
       .popup__inputs {
         display: grid;
         gap: 5px;
+
         .popup__input {
           width: 422px;
-          input {
+
+          input, select {
             width: 100%;
+          }
+
+          select {
+            color: $default;
+            font-size: 14px;
+            font-style: normal;
+            line-height: 130%; /* 18.2px */
+
+            option {
+              color: $default;
+              font-size: 14px;
+              font-style: normal;
+              line-height: 130%; /* 18.2px */
+              height: 31px;
+            }
           }
         }
       }
-
-      .popup__button {
-        margin-top: 20px;
-        padding: 15px;
-      }
     }
-
   }
+}
+
+.popup__button {
+  margin-top: 20px;
+  padding: 15px 20px;
 }

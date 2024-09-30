@@ -5,7 +5,6 @@ import { BlogRoutingModule } from './blog-routing.module';
 import { ArticlesComponent } from './articles/articles.component';
 import { ArticleComponent } from './article/article.component';
 import {SharedModule} from "../../shared/shared.module";
-import {CatalogFilterComponent} from "../../shared/components/catalog-filter/catalog-filter.component";
 import {ReactiveFormsModule} from "@angular/forms";
 
 

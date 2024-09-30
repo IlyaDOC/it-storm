@@ -9,7 +9,10 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { DateFormatPipe } from './pipes/date-format.pipe';
 import { CommentComponent } from './components/comment/comment.component';
 import { ConsultationPopupComponent } from './components/consultation-popup/consultation-popup.component';
-
+import {ReactiveFormsModule} from "@angular/forms";
+import {PhoneMaskDirective} from "../directives/phone-mask.directive";
+import { SuccessPopupComponent } from './components/success-popup/success-popup.component';
+import { OrderPopupComponent } from './components/order-popup/order-popup.component';
 
 
 @NgModule({
@@ -21,7 +24,10 @@ import { ConsultationPopupComponent } from './components/consultation-popup/cons
     BreadcrumbsComponent,
     DateFormatPipe,
     CommentComponent,
-    ConsultationPopupComponent
+    ConsultationPopupComponent,
+    PhoneMaskDirective,
+    SuccessPopupComponent,
+    OrderPopupComponent
   ],
   exports: [
     ServiceItemComponent,
@@ -30,11 +36,15 @@ import { ConsultationPopupComponent } from './components/consultation-popup/cons
     BreadcrumbsComponent,
     DateFormatPipe,
     CommentComponent,
-    ConsultationPopupComponent
+    ConsultationPopupComponent,
+    PhoneMaskDirective,
+    SuccessPopupComponent,
+    OrderPopupComponent
   ],
-    imports: [
-        CommonModule,
-        RouterLinkWithHref
-    ]
+  imports: [
+    CommonModule,
+    RouterLinkWithHref,
+    ReactiveFormsModule,
+  ]
 })
 export class SharedModule { }

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ServiceItemType} from "../../../../types/service-item.type";
+import {PopupService} from "../../services/popup.service";
 
 @Component({
   selector: 'app-service-item',
@@ -9,7 +10,7 @@ import {ServiceItemType} from "../../../../types/service-item.type";
 export class ServiceItemComponent implements OnInit {
   @Input() service: ServiceItemType;
   @Input() index: number = 0;
-  constructor() {
+  constructor(private popupService: PopupService) {
     this.service = {
       title: '',
       description: '',
@@ -20,6 +21,7 @@ export class ServiceItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-
+  open() {
+    this.popupService.openOrderPopup();
+  }
 }

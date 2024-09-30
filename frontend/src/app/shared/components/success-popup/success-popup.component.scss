@@ -1,0 +1,10 @@
+@import "../../../../assets/styles/variables";
+@import "../../../../assets/styles/mixins";
+
+.popup__subtitle {
+  color: $dark-blue;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+}

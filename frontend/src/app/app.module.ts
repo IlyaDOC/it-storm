@@ -13,7 +13,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {AuthInterceptor} from "./core/auth/auth.interceptor";
 import {CarouselModule} from "ngx-owl-carousel-o";
 import {SharedModule} from "./shared/shared.module";
-
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -31,6 +31,7 @@ import {SharedModule} from "./shared/shared.module";
     MatMenuModule,
     HttpClientModule,
     CarouselModule,
+    ReactiveFormsModule,
     SharedModule,
     AppRoutingModule,
   ],

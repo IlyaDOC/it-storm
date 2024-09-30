@@ -11,13 +11,21 @@
     <div class="popup__form" [formGroup]="popupForm">
       <div class="popup__inputs">
         <div class="popup__input">
+          <select class="input" formControlName="service">
+            <option value="Создание сайтов">Создание сайтов</option>
+            <option value="Продвижение">Продвижение</option>
+            <option value="Реклама">Реклама</option>
+            <option value="Копирайтинг">Копирайтинг</option>
+          </select>
+        </div>
+        <div class="popup__input">
           <input type="text" placeholder="Ваше имя" class="input" formControlName="name">
         </div>
         <div class="popup__input">
           <input type="text" placeholder="Ваш номер телефона" class="input" formControlName="phone" appPhoneMask>
         </div>
       </div>
-      <div class="popup__button btn" (click)="consultationRequest()">Заказать консультацию</div>
+      <div class="popup__button btn" (click)="orderRequest()">Заказать консультацию</div>
     </div>
   </div>
 </div>

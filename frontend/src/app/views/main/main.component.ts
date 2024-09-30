@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from "ngx-owl-carousel-o";
 import {ArticleCardType} from "../../../types/article-card.type";
 import {ArticleService} from "../../shared/services/article.service";
-import {CategoryType} from "../../../types/category.type";
 import {AuthService} from "../../core/auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -13,7 +12,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class MainComponent implements OnInit {
   public articles: ArticleCardType[] = [];
-
 
   public services = [
     {
@@ -36,7 +34,6 @@ export class MainComponent implements OnInit {
       description: 'Наши копирайтеры готовы написать Вам любые продающие текста, которые не только обеспечат рост охватов, но и помогут выйти на новый уровень в продажах.',
       price: 750
     },
-
   ];
 
   public reviews = [

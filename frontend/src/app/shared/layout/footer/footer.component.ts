@@ -14,6 +14,6 @@ export class FooterComponent implements OnInit {
 
   }
   openPopup() {
-    this.popupService.openPopup();
+    this.popupService.openConsultationPopup();
   }
 }
