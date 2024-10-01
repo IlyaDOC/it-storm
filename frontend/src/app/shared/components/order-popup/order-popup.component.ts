@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, Validators} from "@angular/forms";
 import {PopupService} from "../../services/popup.service";
 import {DefaultResponseType} from "../../../../types/default-response.type";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {AuthService} from "../../../core/auth/auth.service";
+import {UserService} from "../../services/user.service";
+import {UserInfoType} from "../../../../types/user-info.type";
 
 @Component({
   selector: 'app-order-popup',
@@ -12,20 +15,55 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class OrderPopupComponent implements OnInit {
   public isOpen: boolean = false;
+  private userName: string = '';
   public popupForm = this.fb.group({
     service: ['', Validators.required],
     name: ['', Validators.required],
     phone: ['', Validators.required],
   })
+  public serviceMatch: boolean = false;
+  public selectedService: string = '';
+  public isLogged: boolean = false;
+
   constructor(private fb: FormBuilder,
               private popupService: PopupService,
               private _snackBar: MatSnackBar,
-              ) { }
+              private authService: AuthService,
+              private userService: UserService
+  ) {
+    this.isLogged = this.authService.getIsLoggedIn();
+  }
 
   ngOnInit(): void {
-    this.popupService.popupOrderState$.subscribe(state=> {
+    this.popupService.popupOrderState$.subscribe(state => {
       this.isOpen = state;
+    });
+
+    this.popupService.serviceSubject$.subscribe(service => {
+      this.selectedService = service;
     })
+
+    this.authService.isLogged$.subscribe((isLoggedIn: boolean) => {
+      this.isLogged = isLoggedIn;
+    });
+
+    if (this.isLogged) {
+      this.userService.getUserInfo()
+        .subscribe({
+          next: (data: UserInfoType | DefaultResponseType) => {
+            this.userName = (data as UserInfoType).name;
+            this.popupForm.patchValue({name: this.userName});
+          },
+          error: (errorResponse: HttpErrorResponse) => {
+            if (errorResponse.error && errorResponse.error.message) {
+              this._snackBar.open(errorResponse.error.message);
+            } else {
+              this._snackBar.open('Ошибка получения имени');
+            }
+          }
+        })
+    }
+
   }
 
   close() {

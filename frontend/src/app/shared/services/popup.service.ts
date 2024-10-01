@@ -21,6 +21,10 @@ export class PopupService {
   private popupOrderSubject = new Subject<boolean>();
   public popupOrderState$ = this.popupOrderSubject.asObservable();
 
+  // Subject для хранения вида услуги для последующей передачи в select, чтобы поставить выбор по дэфолту
+  private serviceSubject = new Subject<string>();
+  public serviceSubject$ = this.serviceSubject.asObservable();
+
   constructor(private http: HttpClient) { }
 
   openConsultationPopup() {
@@ -45,6 +49,10 @@ export class PopupService {
 
   closeOrderPopup() {
     this.popupOrderSubject.next(false);
+  }
+
+  setServiceName(serviceName: string) {
+    this.serviceSubject.next(serviceName);
   }
 
   consultationRequest(name: string, phone: string): Observable<DefaultResponseType> {

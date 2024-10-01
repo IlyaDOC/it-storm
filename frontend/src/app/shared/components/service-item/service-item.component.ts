@@ -24,4 +24,8 @@ export class ServiceItemComponent implements OnInit {
   open() {
     this.popupService.openOrderPopup();
   }
+
+  setServiceTitle(title: string) {
+    this.popupService.setServiceName(title);
+  }
 }
