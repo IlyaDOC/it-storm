@@ -4,6 +4,7 @@ import {ArticleCardType} from "../../../types/article-card.type";
 import {ArticleService} from "../../shared/services/article.service";
 import {AuthService} from "../../core/auth/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PopupService} from "../../shared/services/popup.service";
 
 @Component({
   selector: 'app-main',
@@ -91,7 +92,9 @@ export class MainComponent implements OnInit {
 
   constructor(private articleService: ArticleService,
               private authService: AuthService,
-              private _snackBar: MatSnackBar) {
+              private _snackBar: MatSnackBar,
+              private popupService: PopupService,
+              ) {
     this.isLogged = this.authService.getIsLoggedIn();
   }
 
@@ -103,8 +106,10 @@ export class MainComponent implements OnInit {
       .subscribe((data: ArticleCardType[]) => {
         this.articles = data;
       });
+  }
 
-
+  openModal(): void {
+    this.popupService.openOrderPopup();
   }
 
 

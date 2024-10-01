@@ -55,12 +55,16 @@
       @include flexAlignCenter;
       gap: 3px;
 
-      count {
+      .count {
         color: $dark-blue;
         font-size: 14px;
         font-style: normal;
         font-weight: 600;
         line-height: 140%; /* 19.6px */
+
+        &.chosen {
+          color: $default;
+        }
       }
 
       a {
