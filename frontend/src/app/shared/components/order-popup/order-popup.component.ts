@@ -41,10 +41,15 @@ export class OrderPopupComponent implements OnInit {
 
     this.popupService.serviceSubject$.subscribe(service => {
       this.selectedService = service;
+      this.popupForm.patchValue({service: this.selectedService});
     })
 
     this.authService.isLogged$.subscribe((isLoggedIn: boolean) => {
       this.isLogged = isLoggedIn;
+    });
+
+    this.authService.userName$.subscribe((userName: string) => {
+      this.userName = userName;
     });
 
     if (this.isLogged) {

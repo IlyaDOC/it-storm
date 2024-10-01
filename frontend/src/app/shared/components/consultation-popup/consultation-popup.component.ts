@@ -40,6 +40,9 @@ export class ConsultationPopupComponent implements OnInit {
       this.isLogged = isLoggedIn;
     });
 
+    this.authService.userName$.subscribe((userName: string) => {
+      this.userName = userName;
+    });
 
     if (this.isLogged) {
       this.userService.getUserInfo()
