@@ -9,6 +9,10 @@
                    [ngStyle]="{'border-color': email?.invalid
                    && (email?.dirty && email?.touched) ? 'red' : ''}"
                    placeholder="Электронная почта" formControlName="email">
+            <div *ngIf="email?.invalid && (email?.touched || email?.dirty)" class="errors">
+              <small *ngIf="email?.errors?.['required']" class="invalid-feedback">Поле почта обязательно для заполнения.</small>
+              <small *ngIf="email?.errors?.['email']" class="invalid-feedback">Введите email в правильном формате mail@example.com</small>
+            </div>
           </div>
           <div class="auth-input">
             <input [type]="inputType" class="input"
@@ -43,6 +47,9 @@
                 </g>
               </svg>
             </a>
+            <div *ngIf="password?.invalid && (password?.touched || password?.dirty)" class="errors">
+              <small *ngIf="password?.errors?.['required']" class="invalid-feedback">Поле пароль обязательно для заполнения.</small>
+            </div>
           </div>
           <div class="auth-checkbox">
             <input type="checkbox" id="remember" formControlName="rememberMe">

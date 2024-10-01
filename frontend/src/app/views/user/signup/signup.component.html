@@ -8,14 +8,24 @@
             <input type="text" class="input"
                    [ngStyle]="{'border-color': name?.invalid && (name?.dirty && name?.touched) ? 'red' : ''}"
                    placeholder="Ваше имя" formControlName="name">
+            <div *ngIf="name?.invalid && (name?.touched || name?.dirty)">
+              <small *ngIf="name?.errors?.['required']" class="invalid-feedback">Поле имя обязательно для заполнения.</small>
+              <small *ngIf="name?.errors?.['minlength']" class="invalid-feedback">Имя должно содержать минимум 3 символа.</small>
+              <small *ngIf="name?.errors?.['pattern']" class="invalid-feedback">Имя может содержать только русские буквы и пробелы. Каждое новое слово
+              с большой буквы.</small>
+            </div>
           </div>
           <div class="auth-input">
             <input type="text" class="input"
                    [ngStyle]="{'border-color': email?.invalid && (email?.touched && email?.dirty) ? 'red' : ''}"
                    placeholder="Электронная почта" formControlName="email">
+            <div *ngIf="email?.invalid && (email?.touched || email?.dirty)" class="errors">
+              <small *ngIf="email?.errors?.['required']" class="invalid-feedback">Поле почта обязательно для заполнения.</small>
+              <small *ngIf="email?.errors?.['email']" class="invalid-feedback">Введите email в правильном формате mail@example.com</small>
+            </div>
           </div>
           <div class="auth-input">
-            <input [type]="inputType" class="input" class="input"
+            <input [type]="inputType" class="input"
                    [ngStyle]="{'border-color': password?.invalid && (password?.dirty && password?.touched) ? 'red' : ''}"
                    placeholder="Пароль" formControlName="password">
             <a *ngIf="show" (click)="showPassword()" title="Показать пароль">
@@ -46,10 +56,18 @@
                 </g>
               </svg>
             </a>
+            <div *ngIf="password?.invalid && (password?.touched || password?.dirty)" class="errors">
+              <small *ngIf="password?.errors?.['required']" class="invalid-feedback">Поле пароль обязательно для заполнения.</small>
+              <small *ngIf="password?.errors?.['pattern']" class="invalid-feedback">Пароль должен быть не менее 8 символов, содержать
+                минимум 1 букву в верхнем регистре и минимум 1 цифру.</small>
+            </div>
           </div>
           <div class="auth-checkbox">
-            <input type="checkbox" id="agree" formControlName="agree">
+            <input type="checkbox" id="agree" formControlName="agree" class="errors">
             <label for="agree">Я принимаю <a routerLink="/policy">условия пользовательского соглашения</a> и даю <a routerLink="/policy">согласие на обработку персональных данных</a>.</label>
+            <div *ngIf="agree?.invalid">
+              <small *ngIf="password?.errors?.['requiredTrue']" class="invalid-feedback">Вы должны принять условия пользовательского соглашения.</small>
+            </div>
           </div>
         </div>
         <div class="auth-button">

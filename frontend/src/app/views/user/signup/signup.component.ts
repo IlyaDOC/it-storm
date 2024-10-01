@@ -17,7 +17,7 @@ import {UserService} from "../../../shared/services/user.service";
 })
 export class SignupComponent implements OnInit {
   signupForm = this.fb.group({
-    name: ['', [Validators.required, Validators.pattern(/^([А-ЯЁ][а-яё]+(?:\s+[А-ЯЁ][а-яё]+)*)?$/)]],
+    name: ['', [Validators.required, Validators.pattern(/^([А-ЯЁ][а-яё]+(?:\s+[А-ЯЁ][а-яё]+)*)?$/), Validators.minLength(3)]],
     email: ['', [Validators.email, Validators.required]],
     password: ['', [Validators.required, Validators.pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)]],
     agree: [false, [Validators.requiredTrue]]
@@ -45,6 +45,10 @@ export class SignupComponent implements OnInit {
 
   get password() {
     return this.signupForm.get('password');
+  }
+
+  get agree() {
+    return this.signupForm.get('agree');
   }
 
   signup() {

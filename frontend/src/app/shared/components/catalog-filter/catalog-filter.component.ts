@@ -45,18 +45,17 @@ export class CatalogFilterComponent implements OnInit {
 
   }
 
-  // @HostListener('document:click', ['$event'])
-  // onClick(event: MouseEvent) {
-  //   event.stopPropagation();
-  //   const target = event.target as HTMLElement;
-  //   const filterElement = document.querySelector('.category-filter') as HTMLElement;
-  //
-  //   // Проверяем, был ли клик вне компонента
-  //   if (!event.composedPath().includes(filterElement) && event.composedPath().includes(target)) {
-  //
-  //    this.open = false;
-  //   }
-  // }
+  // Отслеживание кликов по документу
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const filterElement = document.querySelector('.catalog__filter') as HTMLElement;
+
+    // Проверяем, был ли клик вне компонента
+    if (this.open && filterElement && !filterElement.contains(target)) {
+      this.open = false; // Закрываем фильтр
+    }
+  }
 
   // Основной функционал фильтра категорий статей
   updateFilterParams(url: string, checked: boolean) {

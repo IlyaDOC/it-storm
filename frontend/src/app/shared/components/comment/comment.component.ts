@@ -16,7 +16,7 @@ import {CommentsType} from "../../../../types/comments.type";
 })
 export class CommentComponent implements OnInit {
   @Input() comment: CommentType;
-  @Input() articleId!: string;
+  @Input() articleId: string = '';
   public isLogged: boolean = false;
   protected readonly ActionType = ActionType;
 
