@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit,} from '@angular/core';
 import {CommentType} from "../../../../types/comment.type";
 import {AuthService} from "../../../core/auth/auth.service";
 import {CommentService} from "../../services/comment.service";
@@ -19,8 +19,11 @@ export class CommentComponent implements OnInit {
   @Input() articleId: string = '';
   public isLogged: boolean = false;
   protected readonly ActionType = ActionType;
+  public comments: CommentType[] = [];
 
-  constructor(private authService: AuthService, private commentService: CommentService, private _snackBar: MatSnackBar) {
+  constructor(private authService: AuthService,
+              private commentService: CommentService,
+              private _snackBar: MatSnackBar) {
     this.comment = {
       id: '',
       text: '',
@@ -34,6 +37,20 @@ export class CommentComponent implements OnInit {
       liked: false,
       disliked: false,
     }
+    this.comments = [{
+      id: '',
+      text: '',
+      date: '',
+      likesCount: 0,
+      dislikesCount: 0,
+      user: {
+        id: '',
+        name: ''
+      },
+      liked: false,
+      disliked: false,
+    }]
+
     this.isLogged = authService.getIsLoggedIn();
   }
 
@@ -42,6 +59,7 @@ export class CommentComponent implements OnInit {
       this.isLogged = isLoggedIn;
     });
   }
+
 
   // Функционал клика по кнопкам комментария
   commentAction(commentId: string, action: ActionType): void {
@@ -55,8 +73,6 @@ export class CommentComponent implements OnInit {
               error = (data as DefaultResponseType).message;
             }
             if (error) {
-              console.log(error);
-
               this._snackBar.open(error);
               throw new Error(error);
             }
@@ -67,7 +83,6 @@ export class CommentComponent implements OnInit {
             } else {
               this._snackBar.open('Ваш голос учтен!');
             }
-
 
 
             // Запросить данные о действиях к комментарию у пользователя
@@ -97,7 +112,7 @@ export class CommentComponent implements OnInit {
 
                   this.commentService.getComments(this.articleId, 0)
                     .subscribe((data: CommentsType) => {
-                      data.comments.forEach(comment=> {
+                      data.comments.forEach(comment => {
                         if (comment.id === this.comment.id) {
                           this.comment.likesCount = comment.likesCount;
                           this.comment.dislikesCount = comment.dislikesCount;

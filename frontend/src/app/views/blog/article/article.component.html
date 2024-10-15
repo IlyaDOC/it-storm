@@ -10,7 +10,7 @@
           </div>
         </div>
         <div class="head__image">
-          <img src="assets/images/article/{{article.image}}">
+          <img style="background-image: url({{serverStaticPath + article.image}})">
         </div>
       </div>
       <div class="article__main">
@@ -80,8 +80,8 @@
                 </button>
               </div>
             </div>
-            <div class="comments__items" *ngIf="article.comments.length > 0">
-              <app-comment *ngFor="let comment of comments" [comment]="comment" [articleId]="article.id"></app-comment>
+            <div class="comments__items">
+              <app-comment *ngFor="let comment of comments" [comment]="comment" [articleId]="articleId"></app-comment>
             </div>
           </div>
           <div class="comments__more" *ngIf="hasMoreComments">

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ArticleService} from "../../../shared/services/article.service";
 import {ArticleCardType} from "../../../../types/article-card.type";
@@ -13,7 +13,7 @@ import {DefaultResponseType} from "../../../../types/default-response.type";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {HttpErrorResponse} from "@angular/common/http";
 import {UserActionsResponseType} from "../../../../types/user-actions.response.type";
-import {Observable, Subject} from "rxjs";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-article',
@@ -32,6 +32,8 @@ export class ArticleComponent implements OnInit {
   private offset: number = 3;
   private readonly limit: number = 10;
   public commentsActions: UserActionsResponseType[] = [];
+  serverStaticPath = environment.serverStaticPath;
+  public articleId: string = '';
 
   public commentForm = this.fb.group({
     text: ['', Validators.required]
@@ -94,7 +96,6 @@ export class ArticleComponent implements OnInit {
       this.isLogged = isLoggedIn;
     });
 
-
     // Получение всех данных по одной статье
     this.activatedRoute.params.subscribe(params => {
       this.articleService.getArticle(params['url'])
@@ -144,6 +145,7 @@ export class ArticleComponent implements OnInit {
         });
     });
 
+
     // Запрос на получение связанных статей
     this.activatedRoute.params.subscribe(params => {
       this.articleService.getRelatedArticlesCards(params['url'])
@@ -189,6 +191,7 @@ export class ArticleComponent implements OnInit {
               throw new Error(error);
             }
 
+            this.updateLastComments();
 
             this.hasMoreComments = this.comments.length < this.article.commentsCount;
             this._snackBar.open(data.message)
@@ -205,7 +208,6 @@ export class ArticleComponent implements OnInit {
         })
     }
 
-
   };
 
   // Обновляем список последних трех комментариев к статье, дополняя его новым
@@ -214,6 +216,7 @@ export class ArticleComponent implements OnInit {
       this.articleService.getArticle(params['url'])
         .subscribe((data: ArticleType) => {
           this.comments = data.comments;
+          this.commentService.comments$.next(this.comments);
         });
     });
 

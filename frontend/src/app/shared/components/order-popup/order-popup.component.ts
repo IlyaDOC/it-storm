@@ -21,7 +21,7 @@ export class OrderPopupComponent implements OnInit {
     name: ['', Validators.required],
     phone: ['', Validators.required],
   })
-  public serviceMatch: boolean = false;
+
   public selectedService: string = '';
   public isLogged: boolean = false;
 

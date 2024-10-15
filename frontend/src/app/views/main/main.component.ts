@@ -112,5 +112,7 @@ export class MainComponent implements OnInit {
     this.popupService.openOrderPopup();
   }
 
-
+  setServiceTitle(title: string) {
+    this.popupService.setServiceName(title);
+  }
 }
