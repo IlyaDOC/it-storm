@@ -81,7 +81,7 @@
               </div>
             </div>
             <div class="comments__items">
-              <app-comment *ngFor="let comment of comments" [comment]="comment" [articleId]="articleId"></app-comment>
+              <app-comment *ngFor="let comment of comments" [comment]="comment" [articleId]="article.id"></app-comment>
             </div>
           </div>
           <div class="comments__more" *ngIf="hasMoreComments">

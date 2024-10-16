@@ -93,7 +93,6 @@ export class CommentComponent implements OnInit {
 
                   if ((data as DefaultResponseType).error) {
                     error = (data as DefaultResponseType).message;
-
                   }
 
                   if (error) {

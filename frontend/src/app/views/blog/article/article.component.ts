@@ -33,7 +33,6 @@ export class ArticleComponent implements OnInit {
   private readonly limit: number = 10;
   public commentsActions: UserActionsResponseType[] = [];
   serverStaticPath = environment.serverStaticPath;
-  public articleId: string = '';
 
   public commentForm = this.fb.group({
     text: ['', Validators.required]
